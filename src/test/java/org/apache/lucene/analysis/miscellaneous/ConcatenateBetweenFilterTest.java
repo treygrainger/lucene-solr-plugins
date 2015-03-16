@@ -9,22 +9,22 @@ import java.io.StringReader;
 
 public class ConcatenateBetweenFilterTest extends BaseTokenStreamTestCase {
 
-  public void testDefaults() throws IOException {
-      String inputText = "one two three";
-      TokenStream stream = new WhitespaceTokenizer(new StringReader(inputText));
-      ConcatenateBetweenFilter filter = new ConcatenateBetweenFilter(stream);
+    public void testDefaults() throws IOException {
+        String inputText = "one two three";
+        TokenStream stream = new WhitespaceTokenizer(new StringReader(inputText));
+        ConcatenateBetweenFilter filter = new ConcatenateBetweenFilter(stream);
 
-      assertTokenStreamContents(
-              filter, //tokenstream
-              new String[]{inputText}, //output: one two three
-              new int[]{0}, //startOffsets: 0
-              new int[]{inputText.length()}, //endOffsets: 13
-              new String[]{"shingle"}, //type: shingle
-              new int[]{1}, //positionIncrements: 1
-              new int[]{1}, //positionLengths: 1
-              inputText.length(), //finalOffsets
-              true); //offsets are correct
-  }
+        assertTokenStreamContents(
+                filter, //tokenstream
+                new String[]{inputText}, //output: one two three
+                new int[]{0}, //startOffsets: 0
+                new int[]{inputText.length()}, //endOffsets: 13
+                new String[]{"shingle"}, //type: shingle
+                new int[]{1}, //positionIncrements: 1
+                new int[]{1}, //positionLengths: 1
+                inputText.length(), //finalOffsets
+                true); //offsets are correct
+    }
 
 
     public void testSeparator() throws IOException {
@@ -37,7 +37,7 @@ public class ConcatenateBetweenFilterTest extends BaseTokenStreamTestCase {
         assertTokenStreamContents(
                 filter,
                 new String[]{"one", "two", "three_xyz_four_xyz_five"}
-                );
+        );
     }
 
     public void testTokenHandling() throws IOException {
@@ -87,7 +87,7 @@ public class ConcatenateBetweenFilterTest extends BaseTokenStreamTestCase {
         filter.setEndToken("END");
         assertTokenStreamContents(
                 filter,
-                new String[]{"one", "two three", "END", "four"} //output
+                new String[]{"one", "two three", "END", "four"}
         );
 
         //startToken and endToken are the same string
@@ -129,8 +129,8 @@ public class ConcatenateBetweenFilterTest extends BaseTokenStreamTestCase {
                         "zero one <concat> two three </concat> four <concat> five six seven".length()},
 
                 new String[]{"word", "word", "shingle", "word", "shingle"}, //type: shingle
-                new int[]{1,1,1,1,1}, //positionIncrements: 1
-                new int[]{1,1,1,1,1}, //positionLengths: 3
+                new int[]{1, 1, 1, 1, 1}, //positionIncrements: 1
+                new int[]{1, 1, 1, 1, 1}, //positionLengths: 3
                 inputText.length(), //finalOffsets
                 true); //offsets are correct
     }
