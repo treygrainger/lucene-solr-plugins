@@ -15,11 +15,11 @@ Configurable parameters:
  * **startToken**: if set, only tokens after the startToken and prior to the next endToken will be
                    concatenated.  If unset, concatenation starts at the beginning of the token stream.
  * **endToken**: if set, stops concatenating tokens after the immediately preceding token.
- * **startTokenHandling**: Supported options: 'exclude', 'include', 'drop' (the default). If set to exclude,
+ * **startTokenHandling**: Supported options: 'separate', 'combine', 'drop' (the default). If set to separate,
                             the start token will not be included in the subsequent concatenated token.
-                            If set to include, the start token will be included in the subsequent concatenated token.
+                            If set to combine, the start token will be included in the subsequent concatenated token.
                             If set to drop, the start token will be removed from the token stream.
- * **endTokenHandling**: Supported options: 'exclude', 'include', 'drop' (the default). If set to exclude,
+ * **endTokenHandling**: Supported options: 'separate', 'combine', 'drop' (the default). If set to separate,
                             the end token will not be included in the preceding concatenated token.
-                            If set to include, the end token will be included in the preceding concatenated token.
+                            If set to combine, the end token will be included in the preceding concatenated token.
                             If set to drop, the start token will be removed from the token stream.
