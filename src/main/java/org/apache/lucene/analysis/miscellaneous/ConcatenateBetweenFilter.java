@@ -17,9 +17,9 @@ import java.io.IOException;
  *     ['the', 'quick', 'brown', fox'] => ['the quick brown fox']
  *   Settings: startToken='<concat>', endToken='</concat>'
  *     ['the', '<concat>', 'quick', 'brown', '</concat>', fox'] => ['the', 'quick brown', 'fox']
- *   Settings: startToken='START', startTokenHandling='exclude'
+ *   Settings: startToken='START', startTokenHandling='separate'
  *     ['the', 'START', 'quick', 'brown', fox'] =>  ['the', 'START', 'quick brown fox']
- *   Settings: separator='_', startToken='^', endToken='$', startTokenHandling='include', endTokenHandling='exclude'
+ *   Settings: separator='_', startToken='^', endToken='$', startTokenHandling='combine', endTokenHandling='separate'
  *     ['^', 'the', '$', '^', 'quick', 'brown', '$', fox', 'jumped', 'over', '^', 'the', 'lazy', 'dog']
  *         =>  ['^_the', '$', '^_quick_brown', '$', 'fox', jumped', 'over', '^_the_lazy_dog']
  *
@@ -27,13 +27,13 @@ import java.io.IOException;
  * @param startToken         if set, only tokens after the startToken and prior to the next endToken will be
  *                           concatenated.  If unset, concatenation starts at the beginning of the token stream.
  * @param endToken           if set, stops concatenating tokens after the immediately preceding token.
- * @param startTokenHandling Supported options: 'exclude', 'include', 'drop' (the default). If set to exclude,
+ * @param startTokenHandling Supported options: 'separate', 'combine', 'drop' (the default). If set to separate,
  *                           the start token will not be included in the subsequent concatenated token.
- *                           If set to include, the start token will be included in the subsequent concatenated token.
+ *                           If set to combine, the start token will be included in the subsequent concatenated token.
  *                           If set to drop, the start token will be removed from the token stream.
- * @param endTokenHandling   Supported options: 'exclude', 'include', 'drop' (the default). If set to exclude,
+ * @param endTokenHandling   Supported options: 'separate', 'combine', 'drop' (the default). If set to separate,
  *                           the end token will not be included in the preceding concatenated token.
- *                           If set to include, the end token will be included in the preceding concatenated token.
+ *                           If set to combine, the end token will be included in the preceding concatenated token.
  *                           If set to drop, the start token will be removed from the token stream.
  */
 public class ConcatenateBetweenFilter extends TokenFilter {
@@ -149,11 +149,11 @@ public class ConcatenateBetweenFilter extends TokenFilter {
             isInConcatenatingMode = true; //turn on concatenation since we hit start token
 
             //we hit our start token
-            if (this.startTokenHandling == TokenHandling.include) {
+            if (this.startTokenHandling == TokenHandling.combine) {
                 this.isFirstSubToken = false;
                 this.currentTokenBeingConcatenated = this.captureState();
                 haveTokenToEmit = false;
-            } else if (this.startTokenHandling == TokenHandling.exclude) {
+            } else if (this.startTokenHandling == TokenHandling.separate) {
                 this.isFirstSubToken = true;
                 //just emit the starting token as-is
                 haveTokenToEmit = true;
@@ -183,7 +183,7 @@ public class ConcatenateBetweenFilter extends TokenFilter {
         if (!this.endToken.equals("") && currentTokenText.equals(this.endToken)) {
             //we hit our end token
 
-            if (this.endTokenHandling == TokenHandling.include) {
+            if (this.endTokenHandling == TokenHandling.combine) {
                 this.concat_endOffset = this.offsetAtt.endOffset();
                 this.restoreState(this.currentTokenBeingConcatenated);
 
@@ -192,7 +192,7 @@ public class ConcatenateBetweenFilter extends TokenFilter {
                 }
                 this.termAtt.append(currentTokenText);
                 this.currentTokenBeingConcatenated = this.captureState();
-            } else if (this.endTokenHandling == TokenHandling.exclude) {
+            } else if (this.endTokenHandling == TokenHandling.separate) {
                 nextTokenAfterConcatenation = this.captureState(); //remember the next token for next call to incrementToken
             }
 
@@ -234,8 +234,8 @@ public class ConcatenateBetweenFilter extends TokenFilter {
     }
 
     public enum TokenHandling {
-        include,
-        exclude,
+        combine,
+        separate,
         drop
     }
 }

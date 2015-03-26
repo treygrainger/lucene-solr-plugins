@@ -45,10 +45,10 @@ public class ConcatenateBetweenFilterTest extends BaseTokenStreamTestCase {
         TokenStream stream;
         ConcatenateBetweenFilter filter;
 
-        //StartTokenHandling=include
+        //StartTokenHandling=combine
         stream = new WhitespaceTokenizer(new StringReader(inputText));
         filter = new ConcatenateBetweenFilter(stream);
-        filter.setStartTokenHandling(ConcatenateBetweenFilter.TokenHandling.include);
+        filter.setStartTokenHandling(ConcatenateBetweenFilter.TokenHandling.combine);
         filter.setStartToken("START");
         filter.setEndToken("END");
         assertTokenStreamContents(
@@ -57,10 +57,10 @@ public class ConcatenateBetweenFilterTest extends BaseTokenStreamTestCase {
         );
 
 
-        //EndTokenHandling=include
+        //EndTokenHandling=combine
         stream = new WhitespaceTokenizer(new StringReader(inputText));
         filter = new ConcatenateBetweenFilter(stream);
-        filter.setEndTokenHandling(ConcatenateBetweenFilter.TokenHandling.include);
+        filter.setEndTokenHandling(ConcatenateBetweenFilter.TokenHandling.combine);
         filter.setStartToken("START");
         filter.setEndToken("END");
         assertTokenStreamContents(
@@ -68,10 +68,10 @@ public class ConcatenateBetweenFilterTest extends BaseTokenStreamTestCase {
                 new String[]{"one", "two three END", "four"}
         );
 
-        //StartTokenHandling=exclude
+        //StartTokenHandling=separate
         stream = new WhitespaceTokenizer(new StringReader(inputText));
         filter = new ConcatenateBetweenFilter(stream);
-        filter.setStartTokenHandling(ConcatenateBetweenFilter.TokenHandling.exclude);
+        filter.setStartTokenHandling(ConcatenateBetweenFilter.TokenHandling.separate);
         filter.setStartToken("START");
         filter.setEndToken("END");
         assertTokenStreamContents(
@@ -79,10 +79,10 @@ public class ConcatenateBetweenFilterTest extends BaseTokenStreamTestCase {
                 new String[]{"one", "START", "two three", "four"}
         );
 
-        //EndTokenHandling=exclude
+        //EndTokenHandling=separate
         stream = new WhitespaceTokenizer(new StringReader(inputText));
         filter = new ConcatenateBetweenFilter(stream);
-        filter.setEndTokenHandling(ConcatenateBetweenFilter.TokenHandling.exclude);
+        filter.setEndTokenHandling(ConcatenateBetweenFilter.TokenHandling.separate);
         filter.setStartToken("START");
         filter.setEndToken("END");
         assertTokenStreamContents(
@@ -97,8 +97,8 @@ public class ConcatenateBetweenFilterTest extends BaseTokenStreamTestCase {
         filter.setStartToken("|");
         filter.setEndToken("|");
         filter.setTokenSeparator("+");
-        filter.setStartTokenHandling(ConcatenateBetweenFilter.TokenHandling.include);
-        filter.setEndTokenHandling(ConcatenateBetweenFilter.TokenHandling.include);
+        filter.setStartTokenHandling(ConcatenateBetweenFilter.TokenHandling.combine);
+        filter.setEndTokenHandling(ConcatenateBetweenFilter.TokenHandling.combine);
 
         assertTokenStreamContents(
                 filter,

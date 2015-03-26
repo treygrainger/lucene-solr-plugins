@@ -24,8 +24,8 @@ public class ConcatenateBetweenFilterFactory extends TokenFilterFactory {
         tokenSeparator = get(args, "tokenSeparator", " ");
         startToken = get(args, "startToken", "");
         endToken = get(args, "endToken", "");
-        startTokenHandling = ConcatenateBetweenFilter.TokenHandling.valueOf(get(args, "startTokenHandling", "exclude"));
-        endTokenHandling = ConcatenateBetweenFilter.TokenHandling.valueOf(get(args, "endTokenHandling", "exclude"));
+        startTokenHandling = ConcatenateBetweenFilter.TokenHandling.valueOf(get(args, "startTokenHandling", ConcatenateBetweenFilter.TokenHandling.drop.toString()));
+        endTokenHandling = ConcatenateBetweenFilter.TokenHandling.valueOf(get(args, "endTokenHandling", ConcatenateBetweenFilter.TokenHandling.drop.toString()));
         if (!args.isEmpty()) {
             throw new IllegalArgumentException("Unknown parameters: " + args);
         }
